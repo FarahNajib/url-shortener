@@ -53,4 +53,7 @@ module.exports = function (app) {
 
   // ----------------Error Handler-------------------
   app.use(api.error.error);
+  
+  // -----------------Urls Views -------------------
+  app.get('/:id', api.urls.redirectUrl);
 };

@@ -7,10 +7,12 @@ let newrelic = require('newrelic'),
 
 const app = express();
 
-app.locals.newrelic = newrelic;
+// app.locals.newrelic = newrelic;
 
+require('./src/config/index');
 require('./src/config/mongoose');
 require('./src/config/redis');
 require('./src/config/express')(app);
+require('./src/routes')(app);
 
 exports = module.exports = app;

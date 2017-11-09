@@ -2,11 +2,14 @@
  * Created by samialmouhtaseb on 08/11/17.
  */
 
-const mongoose = require('mongoose');
+let mongoose = require('mongoose'),
+  client = require('./../config/redis'),
+  utils = require('./../utils/index');
 
 const UrlsSchema = new mongoose.Schema({
-  url: { type: String, default: '', trim: true },
-  encrypted_url: { type: String, default: '', trim: true },
+  url: { type: String, trim: true },
+  seq: { type: Number, unique: true },
+  encrypted_seq: { type: String, unique: true, trim: true },
 });
 
 const Urls = mongoose.model('Urls', UrlsSchema);
@@ -27,10 +30,10 @@ Urls.GetUrls = function (callback) {
   Urls.find({}).lean().exec(callback);
 };
 
-Urls.GetUrl = function (url_id, callback) {
+Urls.GetUrl = function (encrypted_seq, callback) {
   callback = callback || noop;
 
-  Urls.findOne({ _id: url_id }).exec(callback);
+  Urls.findOne({ encrypted_seq }).exec(callback);
 };
 
 
@@ -38,7 +41,12 @@ Urls.CreateUrl = function (obj, callback) {
   callback = callback || noop;
 
   const url = new Urls(obj);
-  url.save(callback);
+  client.incr(config.encrypted_seq_key, (err, seq) => {
+    const encrypted_seq = utils.encode(seq);
+    url.seq = seq;
+    url.encrypted_seq = encrypted_seq;
+    url.save(callback);
+  });
 };
 
 module.exports = Urls;

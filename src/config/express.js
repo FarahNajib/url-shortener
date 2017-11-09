@@ -3,6 +3,8 @@
  */
 
 let fs = require('fs'),
+  express = require('express'),
+  favicon = require('serve-favicon'),
   cookieParser = require('cookie-parser'),
   bodyParser = require('body-parser'),
   compression = require('compression'),
@@ -35,8 +37,9 @@ module.exports = function (app) {
   // Set views path, Template engine and Default layout
   app.engine('html', swig.renderFile);
   app.set('view engine', 'html');
-  app.use('/apps', serveStatic(path.resolve(`${__dirname}./../../views`)));
-  app.use(serveStatic(path.join(__dirname, './../../public')));
+  app.use(express.static(path.join(__dirname, './../../views')));
+  app.use('/public', express.static(path.join(__dirname, './../../public')));
+  app.use(favicon(path.join(__dirname, './../../public', 'favicon.ico')))
 
   // CookieParser
   app.use(cookieParser());

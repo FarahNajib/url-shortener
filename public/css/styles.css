@@ -5,7 +5,7 @@ body {
     text-align: center;
 }
 
-.btn-shorten {
+.btn-shorten, .btn-decrypted {
     color: #ffffff;
     background-color: #48b7f8;
     border: none;
@@ -20,11 +20,10 @@ body {
 }
 
 #link {
-    display: none;
     padding-top: 15px;
 }
 
-#link a {
+.result {
     color: #48b7f8;
     font-size: 1.5em;
     margin-right: 20px;
