@@ -3,7 +3,6 @@
  */
 
 let fs = require('fs'),
-  config = require('../config'),
   cookieParser = require('cookie-parser'),
   bodyParser = require('body-parser'),
   compression = require('compression'),
